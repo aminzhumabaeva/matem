@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Предел и непрерывность функции комплексного переменного</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- KaTeX для рендеринга математических формул -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+</head>
+<body>
+
+<div class="presentation-wrapper">
+    <!-- Верхняя панель навигации -->
+    <header class="top-bar">
+        <div class="course-tag">ТФКП • Лекция</div>
+        <div class="slide-indicator" id="slideIndicator">Слайд 1 из 10</div>
+        <button class="toc-toggle" id="tocToggle" title="Содержание (M)">☰ Содержание</button>
+    </header>
+
+    <!-- Выпадающее оглавление -->
+    <aside class="toc-drawer" id="tocDrawer">
+        <div class="toc-header">
+            <h3>Содержание презентации</h3>
+            <button id="tocClose">&times;</button>
+        </div>
+        <ul id="tocList"></ul>
+    </aside>
+
+    <!-- Контейнер слайдов -->
+    <main class="slides-container" id="slidesContainer">
+
+        <!-- Слайд 1: Титульный -->
+        <section class="slide active title-slide" data-title="Титульный слайд">
+            <div class="badge">Теория функций комплексного переменного</div>
+            <h1>Предел и непрерывность функции комплексного переменного</h1>
+            <p class="subtitle">Определения по Коши и Гейне, критерий существования предела, свойства непрерывных функций и равномерная непрерывность в области $D \subset \mathbb{C}$</p>
+            <div class="meta-grid">
+                <div class="meta-card">
+                    <span class="meta-label">Область определения</span>
+                    <span class="meta-value">$z = x + iy \in D \subset \mathbb{C}$</span>
+                </div>
+                <div class="meta-card">
+                    <span class="meta-label">Отображение</span>
+                    <span class="meta-value">$w = f(z) = u(x,y) + iv(x,y)$</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Слайд 2: Окрестности и предельные точки -->
+        <section class="slide" data-title="Топология комплексной плоскости">
+            <h2>1. Окрестности и предельные точки в $\mathbb{C}$</h2>
+            <div class="two-col">
+                <div class="col">
+                    <div class="def-box">
+                        <h4>$\delta$-окрестность точки $z_0$</h4>
+                        <p>Открытый круг радиуса $\delta > 0$ с центром в точке $z_0$:</p>
+                        <div class="formula-block">$$U_\delta(z_0) = \{ z \in \mathbb{C} : |z - z_0| < \delta \}$$</div>
+                        <p><strong>Проколотая окрестность:</strong></p>
+                        <div class="formula-block">$$\mathring{U}_\delta(z_0) = \{ z \in \mathbb{C} : 0 < |z - z_0| < \delta \}$$</div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="def-box">
+                        <h4>Предельная точка множества $E$</h4>
+                        <p>Точка $z_0 \in \mathbb{C}$ называется <em>предельной точкой</em> множества $E$, если в любой её проколотой окрестности $\mathring{U}_\delta(z_0)$ содержится хотя бы одна точка множества $E$:</p>
+                        <div class="formula-block">$$\forall \delta > 0 \quad \mathring{U}_\delta(z_0) \cap E \neq \varnothing$$</div>
+                    </div>
+                    <div class="note-box">
+                        <strong>Окрестность $\infty$:</strong> $U_R(\infty) = \{ z \in \mathbb{C} : |z| > R \}$ — внешность круга радиуса $R$.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Слайд 3: Определение предела по Коши -->
+        <section class="slide" data-title="Определение предела по Коши">
+            <h2>2. Предел функции (определение по Коши)</h2>
+            <div class="def-box accent-border">
+                <h4>Определение (на языке «$\varepsilon - \delta$»)</h4>
+                <p>Пусть функция $w = f(z)$ определена в некоторой проколотой окрестности $\mathring{U}_{\delta_0}(z_0)$ точки $z_0$. Число $A \in \mathbb{C}$ называется <strong>пределом функции $f(z)$ при $z \to z_0$</strong>, если:</p>
+                <div class="formula-block highlight">$$\forall \varepsilon > 0 \;\; \exists \delta = \delta(\varepsilon) > 0 \;\; \forall z \in E : \quad 0 < |z - z_0| < \delta \implies |f(z) - A| < \varepsilon$$</div>
+                <p class="notation">Обозначение: $\lim\limits_{z \to z_0} f(z) = A$ или $f(z) \to A$ при $z \to z_0$.</p>
+            </div>
+            <div class="geom-note">
+                <strong>Геометрический смысл:</strong> Для любого сколь угодно малого круга радиуса $\varepsilon$ с центром в точке $A$ на плоскости $w$ найдётся круг радиуса $\delta$ с центром в $z_0$ на плоскости $z$, который отображается функцией $f$ внутрь $\varepsilon$-круга (за исключением, быть может, самой точки $z_0$).
+            </div>
+        </section>
+
+        <!-- Слайд 4: Определение по Гейне и независимость от пути -->
+        <section class="slide" data-title="Определение по Гейне и независимость от пути">
+            <h2>3. Определение по Гейне и независимость от пути</h2>
+            <div class="two-col">
+                <div class="col">
+                    <div class="def-box">
+                        <h4>Определение по Гейне (на языке последовательностей)</h4>
+                        <p>Число $A$ называется пределом $f(z)$ при $z \to z_0$, если для любой последовательности точек $\{z_n\} \subset E$ ($z_n \neq z_0$), сходящейся к $z_0$, соответствующая последовательность значений $\{f(z_n)\}$ сходится к $A$:</p>
+                        <div class="formula-block">$$\forall \{z_n\} \to z_0 \implies \lim_{n \to \infty} f(z_n) = A$$</div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="theorem-box">
+                        <h4>Ключевое отличие от $\mathbb{R}$</h4>
+                        <p>В действительном анализе $x \to x_0$ только слева или справа. На комплексной плоскости $z \to z_0$ по <strong>бесконечному числу кривых и направлений</strong>.</p>
+                        <p>Если по двум разным путям получаются разные пределы — <strong>предела не существует</strong>.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="example-box">
+                <strong>Контрпример:</strong> Найти $\lim\limits_{z \to 0} \frac{\bar{z}}{z}$. Пусть $z = r e^{i\varphi} \to 0$ ($r \to 0$). Тогда $\frac{\bar{z}}{z} = \frac{r e^{-i\varphi}}{r e^{i\varphi}} = e^{-2i\varphi}$. Предел зависит от угла наклона луча $\varphi$ (при $\varphi=0$ равен $1$, при $\varphi=\pi/2$ равен $-1$). Следовательно, предела не существует.
+            </div>
+        </section>
+
+        <!-- Слайд 5: Связь с пределами действительных функций -->
+        <section class="slide" data-title="Связь с действительной и мнимой частями">
+            <h2>4. Связь с пределами функций двух переменных</h2>
+            <p>Представим переменную $z = x + iy$, предельную точку $z_0 = x_0 + iy_0$, значение предела $A = a + ib$ и саму функцию $f(z) = u(x, y) + i v(x, y)$.</p>
+            <div class="theorem-box">
+                <h4>Теорема (Критерий существования предела)</h4>
+                <p>Для того чтобы существовал предел $\lim\limits_{z \to z_0} f(z) = A = a + ib$, необходимо и достаточно, чтобы существовали пределы действительной и мнимой частей:</p>
+                <div class="formula-block highlight">$$\lim_{z \to z_0} f(z) = a + ib \iff \begin{cases} \lim\limits_{(x,y) \to (x_0,y_0)} u(x,y) = a, \\[8pt] \lim\limits_{(x,y) \to (x_0,y_0)} v(x,y) = b. \end{cases}$$</div>
+            </div>
+            <div class="note-box">
+                <strong>Следствие:</strong> Исследование предела одной функции комплексного переменного сводится к исследованию пределов двух действительных функций двух действительных переменных.
+            </div>
+        </section>
+
+        <!-- Слайд 6: Интерактивная визуализация -->
+        <section class="slide" data-title="Интерактив: ε-δ отображение w = z²">
+            <h2>5. Интерактивная модель: $\varepsilon-\delta$ отображение $w = z^2$</h2>
+            <div class="interactive-layout">
+                <div class="controls-panel">
+                    <p>Выберите точку $z_0$ и радиус $\delta$ в плоскости $z$. Наблюдайте за образом $f(U_\delta(z_0))$ внутри $\varepsilon$-окрестности точки $w_0 = z_0^2$.</p>
+                    <label>Точка $z_0$:
+                        <select id="z0Select">
+                            <option value="1,0.5">$z_0 = 1 + 0.5i$</option>
+                            <option value="0.8,0.8">$z_0 = 0.8 + 0.8i$</option>
+                            <option value="0,1">$z_0 = i$</option>
+                            <option value="0,0">$z_0 = 0$</option>
+                        </select>
+                    </label>
+                    <label>Радиус $\delta$: <span id="deltaVal">0.25</span>
+                        <input type="range" id="deltaSlider" min="0.05" max="0.50" step="0.01" value="0.25">
+                    </label>
+                    <div class="calc-readout" id="calcReadout"></div>
+                </div>
+                <div class="canvases-pair">
+                    <div class="canvas-card">
+                        <span>Плоскость $z$ (прообраз $U_\delta(z_0)$)</span>
+                        <canvas id="zCanvas" width="320" height="320"></canvas>
+                    </div>
+                    <div class="canvas-card">
+                        <span>Плоскость $w = z^2$ (образ и $U_\varepsilon(w_0)$)</span>
+                        <canvas id="wCanvas" width="320" height="320"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Слайд 7: Арифметические свойства пределов и бесконечно удалённая точка -->
+        <section class="slide" data-title="Свойства пределов и точка ∞">
+            <h2>6. Свойства пределов и пределы в $\infty$</h2>
+            <div class="two-col">
+                <div class="col">
+                    <h4>Арифметические теоремы</h4>
+                    <p>Если $\lim\limits_{z \to z_0} f(z) = A$ и $\lim\limits_{z \to z_0} g(z) = B$, то:</p>
+                    <ul class="math-list">
+                        <li>$\lim\limits_{z \to z_0} [f(z) \pm g(z)] = A \pm B$</li>
+                        <li>$\lim\limits_{z \to z_0} [f(z) \cdot g(z)] = A \cdot B$</li>
+                        <li>$\lim\limits_{z \to z_0} \dfrac{f(z)}{g(z)} = \dfrac{A}{B} \quad (B \neq 0)$</li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <h4>Бесконечно удалённая точка $\infty$</h4>
+                    <ul class="math-list">
+                        <li>$\lim\limits_{z \to z_0} f(z) = \infty \iff \lim\limits_{z \to z_0} \dfrac{1}{f(z)} = 0$</li>
+                        <li>$\lim\limits_{z \to \infty} f(z) = A \iff \lim\limits_{t \to 0} f\left(\dfrac{1}{t}\right) = A$</li>
+                        <li>$\lim\limits_{z \to \infty} f(z) = \infty \iff \lim\limits_{t \to 0} \dfrac{1}{f(1/t)} = 0$</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="note-box">
+                В расширенной комплексной плоскости $\overline{\mathbb{C}} = \mathbb{C} \cup \{\infty\}$ существует только <strong>одна</strong> бесконечно удалённая точка (без знаков $+\infty$ и $-\infty$).
+            </div>
+        </section>
+
+        <!-- Слайд 8: Непрерывность функции -->
+        <section class="slide" data-title="Непрерывность функции в точке и области">
+            <h2>7. Непрерывность функции комплексного переменного</h2>
+            <div class="def-box accent-border">
+                <h4>Определение непрерывности в точке</h4>
+                <p>Функция $w = f(z)$, определённая в некоторой окрестности $U(z_0)$, называется <strong>непрерывной в точке $z_0$</strong>, если существует предел функции в этой точке и он равен значению функции в ней:</p>
+                <div class="formula-block highlight">$$\lim_{z \to z_0} f(z) = f(z_0)$$</div>
+                <p>В разностной форме ($\Delta z = z - z_0$, $\Delta w = f(z_0 + \Delta z) - f(z_0)$):</p>
+                <div class="formula-block">$$\lim_{\Delta z \to 0} \Delta w = 0$$</div>
+            </div>
+            <div class="two-col" style="margin-top: 14px;">
+                <div class="col">
+                    <div class="theorem-box">
+                        <h4>Критерий непрерывности</h4>
+                        <p>$f(z) = u(x,y) + iv(x,y)$ непрерывна в $z_0 = x_0 + iy_0$ $\iff$ $u(x,y)$ и $v(x,y)$ непрерывны в $(x_0, y_0)$.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="def-box">
+                        <h4>Непрерывность в области</h4>
+                        <p>Функция называется непрерывной в области $D$, если она непрерывна в каждой точке $z \in D$.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Слайд 9: Свойства непрерывных функций и классификация разрывов -->
+        <section class="slide" data-title="Свойства непрерывных функций и точки разрыва">
+            <h2>8. Свойства непрерывных функций на компакте</h2>
+            <p>Пусть функция $f(z)$ непрерывна на замкнутом ограниченном множестве (компакте) $K \subset \mathbb{C}$.</p>
+            <div class="grid-3">
+                <div class="card-item">
+                    <h4>1. Ограниченность</h4>
+                    <p>Функция $f(z)$ ограничена на $K$ (теорема Вейерштрасса):</p>
+                    <div class="formula-block">$$\exists M > 0 \;\; \forall z \in K : |f(z)| \le M$$</div>
+                </div>
+                <div class="card-item">
+                    <h4>2. Достижение экстремумов</h4>
+                    <p>Модуль $|f(z)|$ достигает на $K$ своих точных верхней и нижней граней:</p>
+                    <div class="formula-block">$$\exists z_1, z_2 \in K : \begin{aligned} |f(z_1)| &= \max_K |f| \\ |f(z_2)| &= \min_K |f| \end{aligned}$$</div>
+                </div>
+                <div class="card-item">
+                    <h4>3. Равномерная непрерывность</h4>
+                    <p>Теорема Кантора: $f(z)$ равномерно непрерывна на компакте $K$:</p>
+                    <div class="formula-block">$$\forall \varepsilon > 0 \;\; \exists \delta(\varepsilon) > 0 : |z' - z''| < \delta \implies |f(z') - f(z'')| < \varepsilon$$</div>
+                </div>
+            </div>
+            <div class="example-box">
+                <strong>Примеры непрерывных функций во всей плоскости $\mathbb{C}$:</strong> многочлены $P_n(z) = a_0 + a_1 z + \dots + a_n z^n$, экспонента $e^z$, тригонометрические функции $\sin z, \cos z$. Дробно-рациональная функция $R(z) = \frac{P(z)}{Q(z)}$ непрерывна всюду, кроме нулей знаменателя $Q(z) = 0$.
+            </div>
+        </section>
+
+        <!-- Слайд 10: Примеры вычисления пределов и проверка непрерывности -->
+        <section class="slide" data-title="Практические примеры">
+            <h2>9. Примеры решения задач</h2>
+            <div class="two-col">
+                <div class="col">
+                    <div class="example-box">
+                        <h4>Пример 1. Вычисление предела</h4>
+                        <p>Вычислить $\lim\limits_{z \to i} \dfrac{z^2 + 1}{z - i}$.</p>
+                        <p><strong>Решение:</strong> При $z \neq i$ разложим числитель на множители ($i^2 = -1$):</p>
+                        <div class="formula-block">$$\lim_{z \to i} \frac{(z - i)(z + i)}{z - i} = \lim_{z \to i} (z + i) = 2i$$</div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="example-box">
+                        <h4>Пример 2. Исследование на непрерывность</h4>
+                        <p>Исследовать $f(z) = \begin{cases} \frac{\operatorname{Re}(z^2)}{|z|^2}, & z \neq 0 \\ 0, & z = 0 \end{cases}$ в точке $z = 0$.</p>
+                        <p><strong>Решение:</strong> Пусть $z = x + iy$. Тогда $\operatorname{Re}(z^2) = x^2 - y^2$, $|z|^2 = x^2 + y^2$. При приближении вдоль $y = kx$:</p>
+                        <div class="formula-block">$$\lim_{x \to 0} \frac{x^2 - k^2 x^2}{x^2 + k^2 x^2} = \frac{1 - k^2}{1 + k^2}$$</div>
+                        <p>Предел зависит от $k$, значит при $z=0$ функция терпит разрыв.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Нижняя навигация -->
+    <footer class="bottom-bar">
+        <button class="nav-btn" id="prevBtn" disabled>← Назад</button>
+        <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <button class="nav-btn primary" id="nextBtn">Далее →</button>
+    </footer>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Рендер формул KaTeX
+        if (window.renderMathInElement) {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ],
+                throwOnError: false
+            });
+        }
+
+        const slides = Array.from(document.querySelectorAll('.slide'));
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const indicator = document.getElementById('slideIndicator');
+        const progressFill = document.getElementById('progressFill');
+        const tocToggle = document.getElementById('tocToggle');
+        const tocClose = document.getElementById('tocClose');
+        const tocDrawer = document.getElementById('tocDrawer');
+        const tocList = document.getElementById('tocList');
+
+        let currentSlide = 0;
+
+        // Генерация оглавления
+        slides.forEach((slide, idx) => {
+            const li = document.createElement('li');
+            li.textContent = `${idx + 1}. ${slide.dataset.title || 'Слайд ' + (idx + 1)}`;
+            li.addEventListener('click', () => {
+                goToSlide(idx);
+                tocDrawer.classList.remove('open');
+            });
+            tocList.appendChild(li);
+        });
+
+        function goToSlide(index) {
+            if (index < 0 || index >= slides.length) return;
+            slides[currentSlide].classList.remove('active');
+            currentSlide = index;
+            slides[currentSlide].classList.add('active');
+
+            indicator.textContent = `Слайд ${currentSlide + 1} из ${slides.length}`;
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+            progressFill.style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
+
+            Array.from(tocList.children).forEach((li, i) => {
+                li.classList.toggle('active', i === currentSlide);
+            });
+
+            if (currentSlide === 5) drawMapping();
+        }
+
+        prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+        nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+
+        tocToggle.addEventListener('click', () => tocDrawer.classList.toggle('open'));
+        tocClose.addEventListener('click', () => tocDrawer.classList.remove('open'));
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'Space') {
+                e.preventDefault();
+                goToSlide(currentSlide + 1);
+            } else if (e.key === 'ArrowLeft') {
+                goToSlide(currentSlide - 1);
+            } else if (e.key.toLowerCase() === 'm') {
+                tocDrawer.classList.toggle('open');
+            }
+        });
+
+        // Интерактивный график отображения w = z^2
+        const zCanvas = document.getElementById('zCanvas');
+        const wCanvas = document.getElementById('wCanvas');
+        const z0Select = document.getElementById('z0Select');
+        const deltaSlider = document.getElementById('deltaSlider');
+        const deltaVal = document.getElementById('deltaVal');
+        const calcReadout = document.getElementById('calcReadout');
+
+        function drawAxes(ctx, w, h, scale, labels) {
+            ctx.clearRect(0, 0, w, h);
+            const cx = w / 2, cy = h / 2;
+
+            // Сетка
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 1;
+            for (let x = cx % scale; x < w; x += scale) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+            }
+            for (let y = cy % scale; y < h; y += scale) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+            }
+
+            // Оси
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(w, cy); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, h); ctx.stroke();
+
+            ctx.fillStyle = '#475569';
+            ctx.font = '12px sans-serif';
+            ctx.fillText(labels[0], w - 24, cy - 6);
+            ctx.fillText(labels[1], cx + 6, 14);
+        }
+
+        function drawMapping() {
+            if (!zCanvas || !wCanvas) return;
+            const [x0, y0] = z0Select.value.split(',').map(Number);
+            const delta = parseFloat(deltaSlider.value);
+            deltaVal.textContent = delta.toFixed(2);
+
+            const zCtx = zCanvas.getContext('2d');
+            const wCtx = wCanvas.getContext('2d');
+            const scaleZ = 75;
+            const scaleW = 48;
+
+            drawAxes(zCtx, 320, 320, scaleZ, ['Re z', 'Im z']);
+            drawAxes(wCtx, 320, 320, scaleW, ['Re w', 'Im w']);
+
+            const cx = 160, cy = 160;
+
+            // Круг U_delta(z0) на плоскости z
+            const zx = cx + x0 * scaleZ;
+            const zy = cy - y0 * scaleZ;
+            zCtx.fillStyle = 'rgba(37, 99, 235, 0.18)';
+            zCtx.strokeStyle = '#2563eb';
+            zCtx.lineWidth = 2;
+            zCtx.beginPath();
+            zCtx.arc(zx, zy, delta * scaleZ, 0, Math.PI * 2);
+            zCtx.fill();
+            zCtx.stroke();
+
+            zCtx.fillStyle = '#1e3a8a';
+            zCtx.beginPath();
+            zCtx.arc(zx, zy, 4, 0, Math.PI * 2);
+            zCtx.fill();
+
+            // Образ w = z^2
+            const u0 = x0 * x0 - y0 * y0;
+            const v0 = 2 * x0 * y0;
+            const wx = cx + u0 * scaleW;
+            const wy = cy - v0 * scaleW;
+
+            let maxDist = 0;
+            wCtx.fillStyle = 'rgba(13, 148, 136, 0.22)';
+            wCtx.strokeStyle = '#0d9488';
+            wCtx.lineWidth = 2;
+            wCtx.beginPath();
+
+            const steps = 120;
+            for (let i = 0; i <= steps; i++) {
+                const theta = (i / steps) * Math.PI * 2;
+                const x = x0 + delta * Math.cos(theta);
+                const y = y0 + delta * Math.sin(theta);
+                const u = x * x - y * y;
+                const v = 2 * x * y;
+                const dist = Math.hypot(u - u0, v - v0);
+                if (dist > maxDist) maxDist = dist;
+
+                const px = cx + u * scaleW;
+                const py = cy - v * scaleW;
+                if (i === 0) wCtx.moveTo(px, py);
+                else wCtx.lineTo(px, py);
+            }
+            wCtx.closePath();
+            wCtx.fill();
+            wCtx.stroke();
+
+            // Описывающая окружность радиуса epsilon
+            const eps = maxDist + 0.05;
+            wCtx.strokeStyle = '#e11d48';
+            wCtx.setLineDash([5, 4]);
+            wCtx.lineWidth = 1.5;
+            wCtx.beginPath();
+            wCtx.arc(wx, wy, eps * scaleW, 0, Math.PI * 2);
+            wCtx.stroke();
+            wCtx.setLineDash([]);
+
+            wCtx.fillStyle = '#0f766e';
+            wCtx.beginPath();
+            wCtx.arc(wx, wy, 4, 0, Math.PI * 2);
+            wCtx.fill();
+
+            calcReadout.innerHTML = `
+                <div><strong>Образ центра:</strong> $w_0 = z_0^2 = ${u0.toFixed(2)} ${v0 >= 0 ? '+' : '-'} ${Math.abs(v0).toFixed(2)}i$</div>
+                <div><strong>Достаточное $\\varepsilon$:</strong> $${eps.toFixed(2)}$ (пунктир)</div>
+            `;
+            if (window.renderMathInElement) {
+                renderMathInElement(calcReadout, {
+                    delimiters: [{left: '$', right: '$', display: false}]
+                });
+            }
+        }
+
+        if (z0Select && deltaSlider) {
+            z0Select.addEventListener('change', drawMapping);
+            deltaSlider.addEventListener('input', drawMapping);
+        }
+
+        goToSlide(0);
+    });
+</script>
+</body>
+</html>
